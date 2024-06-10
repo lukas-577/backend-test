@@ -19,8 +19,8 @@ const validateToken = async (req, res) => {
         const user = {
             uid: decodedToken.uid,
             email: decodedToken.email,
-            // Aquí puedes agregar lógica para obtener el rol del token, si está presente
-            role: decodedToken.role || null
+            role: decodedToken.role || null,
+            emailVerified: decodedToken.email_verified,
         };
 
         // Enviar la respuesta con el usuario válido
