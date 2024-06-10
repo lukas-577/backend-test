@@ -2,19 +2,41 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
+// CDN CSS
+
+const CSS_URL =
+    "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+
+
+
 const options = {
     definition: {
-        openapi: '3.0.0',
+        openapi: "3.0.0",
         info: {
-            title: 'API Documentation',
-            version: '1.0.0',
+            title: "Microservicio de Autenticación con Firebase",
+            version: "1.0.0",
+            description: "Este es un microservicio de autenticación con Firebase",
+            contact: {
+                name: "API Support",
+                email: "mleiva@utem.cl",
+            },
         },
+        servers: [
+            {
+                url: "https://backend-test-sepia.vercel.app/",
+                description: "Servidor de producción",
+            },
+        ],
     },
-    apis: ['./routes/*.js', './controller/**/*.js'], // Ruta a tus archivos de rutas y controladores
+    apis: ["src/**/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
 
 module.exports = (app) => {
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-};
+    app.use(
+        '/api-docs'
+        , swaggerUi.serve,
+        swaggerUi.setup(specs, { customCssUrl: CSS_URL })
+    );
+}
