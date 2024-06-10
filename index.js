@@ -22,10 +22,10 @@ const logger = (req, res, next) => {
 app.use(cors({ origin: true, methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'] }));
 app.use(express.json());
 
+swaggerSetup(app);
 app.use(logger);
 app.use('/', authRoutes);
 
-swaggerSetup(app);
 
 const PORT = process.env.PORT || 3000;
 

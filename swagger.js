@@ -26,16 +26,20 @@ const options = {
                 url: "https://backend-test-sepia.vercel.app/",
                 description: "Servidor de producción",
             },
+            {
+                url: "https://musical-disco-rxw6qqwqqvw2pvxv-4000.app.github.dev/",
+                description: "Servidor local",
+            },
         ],
     },
-    apis: ["src/**/*.js"],
+    apis: ["./routes/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
 
 module.exports = (app) => {
     app.use(
-        '/api-docs'
+        '/'
         , swaggerUi.serve,
         swaggerUi.setup(specs, { customCssUrl: CSS_URL })
     );
