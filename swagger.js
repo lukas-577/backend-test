@@ -35,7 +35,7 @@ const specs = swaggerJsdoc(options);
 
 module.exports = (app) => {
     app.use(
-        '/'
+        '/docs'
         , swaggerUi.serve,
         swaggerUi.setup(specs, {
             customCss:
