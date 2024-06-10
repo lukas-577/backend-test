@@ -3,6 +3,8 @@ const express = require('express');
 const registerUser = require('../controller/auth/registerUser.js');
 const loginUser = require('../controller/auth/loginUser.js');
 const validateToken = require('../controller/auth/validateToken.js');
+const forgotPassword = require('../controller/auth/forgotPassword.js');
+
 const router = express.Router();
 
 /**
@@ -24,9 +26,11 @@ const router = express.Router();
  *                 type: string
  *     responses:
  *       200:
- *         description: OK
+ *         description: Usuario registrado y correo de verificación enviado
  *       400:
- *         description: Error durante el registro
+ *         description: Error en la solicitud
+ *       500:
+ *         description: Error en el servidor
  */
 router.post('/register', registerUser);
 
@@ -49,9 +53,9 @@ router.post('/register', registerUser);
  *                 type: string
  *     responses:
  *       200:
- *         description: OK
+ *         description: Usuario autenticado
  *       400:
- *         description: Error durante el inicio de sesión
+ *         description: Error en la solicitud
  */
 router.post('/login', loginUser);
 
@@ -64,19 +68,39 @@ router.post('/login', loginUser);
  *     parameters:
  *       - in: header
  *         name: Authorization
+ *         required: true
+ *         description: Token de autenticación JWT en el formato 'Bearer <token>'
  *         schema:
  *           type: string
- *         required: true 
  *     responses:
  *       200:
- *         description: OK
+ *         description: Token válido
  *       401:
- *         description: Token inválido
- *       404:
- *         description: No token provided
+ *         description: Token inválido o no proporcionado
  */
 router.get('/validateToken', validateToken);
 
-
+/**
+ * @swagger
+ * /auth/forgotPassword:
+ *   post:
+ *     summary: Envía un correo de restablecimiento de contraseña
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Correo de restablecimiento de contraseña enviado
+ *       500:
+ *         description: Error al enviar el correo de restablecimiento de contraseña
+ */
+router.post('/forgotPassword', forgotPassword);
 
 module.exports = router;

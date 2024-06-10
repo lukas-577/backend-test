@@ -23,7 +23,7 @@ app.use(cors({ origin: true, methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 
 app.use(express.json());
 
 app.use(logger);
-app.use('/auth', authRoutes);
+app.use('/', authRoutes);
 
 swaggerSetup(app);
 
