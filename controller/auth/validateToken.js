@@ -2,7 +2,6 @@
 const { auth } = require('../../config.js');
 
 const validateToken = async (req, res) => {
-    console.log(req.headers.authorization)
     try {
         // Verificar si el encabezado Authorization existe y contiene el token
         if (!req.headers.authorization) {
@@ -21,6 +20,8 @@ const validateToken = async (req, res) => {
             email: decodedToken.email,
             role: decodedToken.role || null,
             emailVerified: decodedToken.email_verified,
+            displayName: decodedToken.name,
+            photoURL: decodedToken.picture,
         };
 
         // Enviar la respuesta con el usuario válido

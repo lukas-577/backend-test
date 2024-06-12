@@ -6,6 +6,7 @@ const loginUser = async (req, res) => {
 const { email, password } = req.body;
     try {
         const user = await signInWithEmailAndPassword(getAuth(), email, password);
+
         res.send({ token: user._tokenResponse.idToken });
     } catch (error) {
         if (error.code === 'auth/user-not-found') {

@@ -16,6 +16,7 @@ const logger = (req, res, next) => {
         console.log(`[${date}] [${req.method}] ${req.originalUrl} [${res.statusCode}] [Requests in the last hour: ${requestCount}]`);
         originalSend.call(this, body);
     };
+    requestCount++;
     next();
 };
 

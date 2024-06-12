@@ -8,7 +8,8 @@ const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 
 // Inicializar la aplicación de Firebase Admin con las credenciales del servicio
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
 // Parsear las credenciales del cliente de Firebase desde las variables de entorno

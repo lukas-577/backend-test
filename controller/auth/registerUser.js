@@ -1,7 +1,20 @@
 // Path: controller/auth/registerUser.js
-const { getAuth, signInWithEmailAndPassword, sendEmailVerification } = require('firebase/auth');
-const { auth } = require('../../config.js');
+const { auth, db } = require('../../config.js');
 const { assignRole } = require('../../utils.js');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+    }
+});
+
+const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
 
 const registerUser = async (req, res) => {
     const { email, password } = req.body;
@@ -15,13 +28,33 @@ const registerUser = async (req, res) => {
         await assignRole(uid, 'guest');
         console.log(`Rol 'guest' asignado a UID: ${uid}`);
 
-        // Iniciar sesión con el SDK de cliente para poder enviar el correo de verificación
-        const userCredential = await signInWithEmailAndPassword(getAuth(), email, password);
-        const user = userCredential.user;
+        // Generar el código de verificación
+        const verificationCode = generateVerificationCode();
+
+        // Guardar el usuario y el código en Firestore con una marca de tiempo
+        const expirationTime = new Date();
+        expirationTime.setHours(expirationTime.getHours() + 1); // Expira en 1 hora
+        // Guardar en Firestore
+        await db.collection('users').doc(uid).set({
+            email,
+            verificationCode,
+            codeValidUntil: expirationTime,
+            verified: false
+        });
+
+        console.log(`Código de verificación generado: ${verificationCode}`);
+        // Configurar el correo de verificación
+        const mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Código de verificación',
+            text: `Tu código de verificación es: ${verificationCode}. Es válido por 1 hora.`,
+            html: `<p>Tu código de verificación es: <strong>${verificationCode}</strong>. Es válido por 1 hora.</p>`
+        };
 
         // Enviar el correo de verificación
-        await sendEmailVerification(user);
-        console.log('Se ha enviado un correo de verificación');
+        await transporter.sendMail(mailOptions);
+        console.log('Correo de verificación enviado a:', email);
 
         res.status(200).send({
             message: 'Usuario creado y correo de verificación enviado',
