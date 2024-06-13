@@ -20,8 +20,8 @@ const validateToken = async (req, res) => {
             email: decodedToken.email,
             role: decodedToken.role || null,
             emailVerified: decodedToken.email_verified,
-            displayName: decodedToken.name,
-            photoURL: decodedToken.picture,
+            displayName: decodedToken.name || null,
+            photoURL: decodedToken.picture || null,
         };
 
         // Enviar la respuesta con el usuario válido
