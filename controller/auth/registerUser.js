@@ -48,9 +48,88 @@ const registerUser = async (req, res) => {
             from: process.env.EMAIL,
             to: email,
             subject: 'Código de verificación',
-            text: `Tu código de verificación es: ${verificationCode}. Es válido por 1 hora.`,
-            html: `<p>Tu código de verificación es: <strong>${verificationCode}</strong>. Es válido por 1 hora.</p>`
+            html: `
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Correo de Verificación</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #2B3139; /* Cambiado a fondo más oscuro */
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        width: 100%;
+                        max-width: 600px;
+                        margin: 0 auto;
+                        background-color: #242424;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        border-radius: 10px;
+                        overflow: hidden;
+                    }
+                    .header {
+                        background-color: #2B3139; 
+                        padding: 15px 0;
+                        text-align: center;
+                    }
+                    .header img {
+                        max-width: 150px;
+                    }
+                    .content {
+                        padding: 20px;
+                        color: #ffffff; /* Cambiado color del texto principal */
+                    }
+                    .content h1 {
+                        color: #ffed4a; /* Resaltar color del título */
+                        margin-top: 0;
+                    }
+                    .content p {
+                        color: #ffffff;
+                        margin-bottom: 15px;
+                    }
+                    .content a {
+                        color: #ffed4a; /* Resaltar color del enlace */
+                        text-decoration: none;
+                        font-weight: bold;
+                    }
+                    .footer {
+                        background-color: #2B3139; /* Cambiado color del pie de página */
+                        padding: 10px;
+                        text-align: center;
+                        font-size: 12px;
+                        color: #999999;
+                    }
+                    .footer p {
+                        margin: 0;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/lumotareas.appspot.com/o/logo192.png?alt=media&token=b8fd3fb6-a44e-4479-a188-0bb73a8051f9" alt="Utem TX">
+                    </div>
+                    <div class="content">
+                        <h1>Hola,</h1>
+                        <p>Este correo lo envía Utem TX, se solicitó verificar su cuenta.</p>
+                        <p>Tu código de verificación es: <strong style="color: #ffed4a;">${verificationCode}</strong>. Es válido por 1 hora.</p>
+                        <p>Puedes ingresar <a href="http://localhost:5173/verify/${email}/${uid}" style="color: #ffed4a;">aquí</a> para verificar tu cuenta.</p>
+                        <p>Si no solicitaste esto, por favor ignora este mensaje.</p>
+                    </div>
+                    <div class="footer">
+                        <p>&copy; 2024 Utem TX. Todos los derechos reservados.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            `
         };
+
+
 
         // Enviar el correo de verificación
         await transporter.sendMail(mailOptions);
