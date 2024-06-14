@@ -1,6 +1,6 @@
 // controller/auth/verifyCode.js
 
-const { db } = require('../../config.js');
+const { db, auth } = require('../../config.js');
 const { assignRole } = require('../../utils.js');
 
 const verifyCode = async (req, res) => {
@@ -29,6 +29,12 @@ const verifyCode = async (req, res) => {
             await userRef.update({ verified: true });
             // Cambiar el role a miembro
             await assignRole(uid, 'member');
+            // Verificar el correo del usuario desde el auth
+
+            await auth.updateUser(uid, {
+                emailVerified: true
+            });
+
             return res.status(200).send('Usuario verificado correctamente');
         } else {
             return res.status(400).send('Código de verificación incorrecto');
