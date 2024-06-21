@@ -7,6 +7,6 @@ spec:
     app: backend-test
   ports:
     - protocol: TCP
-      port: 81
-      targetPort: 9090
+      port: 80
+      targetPort: 3000
   type: ClusterIP

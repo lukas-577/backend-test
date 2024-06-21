@@ -16,7 +16,7 @@ spec:
           service:
             name: backend-tets
             port:
-              number: 81
+              number: 80
         pathType: Prefix
         path: /
   tls:
