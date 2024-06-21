@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-binance-ingress-v2
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec: 
+  rules:
+  - host: backend-tets.tssw.cl
+    http:
+      paths:
+      - backend:
+          service:
+            name: backend-tets
+            port:
+              number: 81
+        pathType: Prefix
+        path: /
+  tls:
+  - hosts:
+    - backend-tets.tssw.cl
+    secretName: backend-test-ingress-secret
